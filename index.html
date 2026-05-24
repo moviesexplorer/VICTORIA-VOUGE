@@ -2146,6 +2146,7 @@
                 <input type="text" maxlength="1" style="width:40px;height:40px;text-align:center;border:1px solid #ddd;border-radius:12px;font-size:1.2rem;outline:none;">
                 <input type="text" maxlength="1" style="width:40px;height:40px;text-align:center;border:1px solid #ddd;border-radius:12px;font-size:1.2rem;outline:none;">
                 <input type="text" maxlength="1" style="width:40px;height:40px;text-align:center;border:1px solid #ddd;border-radius:12px;font-size:1.2rem;outline:none;">
+                <input type="text" maxlength="1" style="width:40px;height:40px;text-align:center;border:1px solid #ddd;border-radius:12px;font-size:1.2rem;outline:none;">
             </div>
             <button class="login-btn" onclick="verify2FA()" style="width:100%;padding:12px;background:var(--gold-dark);color:#fff;border:none;border-radius:50px;font-weight:500;cursor:pointer;">Verify</button>
         </div>
@@ -2695,6 +2696,32 @@
 
         // ===== FETCH PRODUCTS ON LOAD =====
         fetchProducts();
+
+        // ===== FILTERS & SORTING =====
+        function filterProducts() {
+            const category = document.getElementById('categoryFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+            const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value) || 200;
+            const minRating = parseFloat(document.getElementById('ratingFilter').value) || 0;
+            
+            let filtered = products.filter(p => {
+                const categoryMatch = !category || p.category === category;
+                const priceMatch = p.price >= minPrice && p.price <= maxPrice;
+                const ratingMatch = p.rating >= minRating;
+                return categoryMatch && priceMatch && ratingMatch;
+            });
+            
+            switch(sort) {
+                case 'price-low': filtered.sort((a,b) => a.price - b.price); break;
+                case 'price-high': filtered.sort((a,b) => b.price - a.price); break;
+                case 'rating': filtered.sort((a,b) => b.rating - a.rating); break;
+                case 'best-selling': filtered.sort((a,b) => (b.reviews?.length || 0) - (a.reviews?.length || 0)); break;
+                default: filtered.sort((a,b) => b.id - a.id);
+            }
+            
+            loadProducts(filtered);
+        }
 
         // ===== CART =====
 
