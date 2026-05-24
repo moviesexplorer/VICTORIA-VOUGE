@@ -2697,15 +2697,6 @@
         fetchProducts();
 
         // ===== CART =====
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        let compareList = JSON.parse(localStorage.getItem('compare')) || [];
-        let currentCurrency = 'USD';
-        let currentLanguage = 'en';
-        let selectedPaymentMethod = 'credit';
-        let couponApplied = false;
-        let flashTimerInterval;
-        let checkoutStep = 1;
 
         // ===== INIT =====
         filterProducts();
